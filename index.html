@@ -11,200 +11,152 @@
     --cor-hover:#D84328;
     --borda:#e5e5e5;
 }
-
-*{
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-    margin:0;
-    background:#ffffff;
-    color:#333;
-}
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+body{margin:0;background:#fff;color:#333}
 
 /* SPLASH */
 #splash{
-    position:fixed;
-    inset:0;
-    background:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
+    position:fixed;inset:0;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999
 }
 #splash img{width:120px}
 
 /* LOGO */
-.header{
-    display:flex;
-    justify-content:center;
-    padding:18px 0 10px;
-}
+.header{display:flex;justify-content:center;padding:18px 0 10px}
 .header img{height:42px}
 
 /* CONTAINER */
-.container{
-    max-width:420px;
-    margin:auto;
-    padding:16px;
-}
+.container{max-width:420px;margin:auto;padding:16px}
 
 /* BOX */
 .box{
     border:1px solid var(--borda);
     border-radius:6px;
     padding:14px;
-    margin-bottom:16px;
+    margin-bottom:16px
 }
-
 .option{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:10px 0;
-    border-bottom:1px solid var(--borda);
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid var(--borda)
 }
 .option:last-child{border-bottom:none}
 .option span{color:var(--cor);font-weight:bold}
 
 button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:6px;
-    background:var(--cor);
-    color:#fff;
-    font-size:14px;
-    cursor:pointer;
+    width:100%;padding:12px;border:none;border-radius:6px;
+    background:var(--cor);color:#fff;font-size:14px;cursor:pointer
 }
 button:hover{background:var(--cor-hover)}
 
 .pix-box{
-    display:none;
-    text-align:center;
-    border-top:1px solid var(--borda);
-    padding-top:16px;
+    display:none;text-align:center;
+    border-top:1px solid var(--borda);padding-top:16px
 }
-
 .notice{
-    margin-top:12px;
-    padding:10px;
-    background:#fff3ef;
-    border:1px solid #ffd2c7;
-    border-radius:6px;
-    font-size:13px;
-    color:var(--cor);
+    margin-top:12px;padding:10px;
+    background:#fff3ef;border:1px solid #ffd2c7;
+    border-radius:6px;font-size:13px;color:var(--cor)
 }
-
 .footer{
-    margin-top:20px;
-    font-size:11px;
-    color:#777;
-    text-align:center;
+    margin-top:20px;font-size:11px;color:#777;text-align:center
 }
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <div id="splash">
     <img src="logo1.jpeg">
 </div>
 
-<!-- LOGO -->
 <div class="header">
     <img src="logo1.jpeg">
 </div>
 
 <div class="container">
 
-    <div class="box">
-        <strong>Escolha o tipo de envio:</strong>
+<div class="box">
+<strong>Escolha o tipo de envio:</strong>
 
-        <div class="option">
-            <label>
-                <input type="radio" name="envio"
-                       data-valor="100,00"
-                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/2235ea54b07743659de14e88603149c15204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***630481D7">
-                Envio Express
-            </label>
-            <span>R$ 100,00</span>
-        </div>
+<div class="option">
+<label>
+<input type="radio" name="envio"
+data-valor="100,00"
+data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/2235ea54b07743659de14e88603149c15204000053039865802BR5916AJCGATEWAYLTDA6009JOINVILLE62070503***630481D7">
+Envio Express
+</label>
+<span>R$ 100,00</span>
+</div>
 
-        <div class="option">
-            <label>
-                <input type="radio" name="envio"
-                       data-valor="50,00"
-                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/90bbd13bd73e4a358759a6c243499ef75204000053039865802BR5916IVI GATEWAY LTDA6009JOINVILLE62070503***63047F0B">
-                Envio Normal
-            </label>
-            <span>R$ 50,00</span>
-        </div>
-    </div>
+<div class="option">
+<label>
+<input type="radio" name="envio"
+data-valor="50,00"
+data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/90bbd13bd73e4a358759a6c243499ef75204000053039865802BR5916IVIGATEWAYLTDA6009JOINVILLE62070503***63047F0B">
+Envio Normal
+</label>
+<span>R$ 50,00</span>
+</div>
+</div>
 
-    <div id="pixBox" class="pix-box">
-        <strong>Total a pagar</strong>
-        <div style="font-size:18px;color:var(--cor);margin-bottom:10px;">
-            R$ <span id="total">0,00</span>
-        </div>
+<div id="pixBox" class="pix-box">
+<strong>Total a pagar</strong>
+<div style="font-size:18px;color:var(--cor);margin-bottom:10px">
+R$ <span id="total">0,00</span>
+</div>
 
-        <!-- QR CODE -->
-        <img id="qrcode" style="width:220px;margin:10px auto;display:none;">
+<div id="qrcode"></div>
 
-        <pre id="codigo" style="display:none;"></pre>
+<pre id="codigo" style="display:none"></pre>
 
-        <button id="copiar">Copiar código Pix</button>
+<button id="copiar">Copiar código Pix</button>
 
-        <div class="notice">
-            Após o pagamento, envie o comprovante no chat para confirmação.
-        </div>
-    </div>
+<div class="notice">
+Após o pagamento, envie o comprovante no chat para confirmação.
+</div>
+</div>
 
-    <div class="footer">
-        Pagamento protegido • Ambiente seguro<br>
-        CNPJ: 35.635.824/0001-12
-    </div>
+<div class="footer">
+Pagamento protegido • Ambiente seguro<br>
+CNPJ: 35.635.824/0001-12
+</div>
 
 </div>
 
+<!-- QR CODE LOCAL (SEM API) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <script>
-/* SPLASH */
-window.onload = ()=>{
-    setTimeout(()=>{
-        document.getElementById("splash").style.display="none";
-    },1500);
-};
+window.onload=()=>setTimeout(()=>splash.style.display="none",1500)
 
-const radios = document.querySelectorAll('input[name="envio"]');
-const pixBox = document.getElementById("pixBox");
-const total = document.getElementById("total");
-const codigo = document.getElementById("codigo");
-const copiar = document.getElementById("copiar");
-const qrcode = document.getElementById("qrcode");
+const radios=document.querySelectorAll('input[name="envio"]')
+const pixBox=document.getElementById("pixBox")
+const total=document.getElementById("total")
+const codigo=document.getElementById("codigo")
+const copiar=document.getElementById("copiar")
+const qrDiv=document.getElementById("qrcode")
+let qr
 
-/* ESCOLHA DO ENVIO */
-radios.forEach(radio=>{
-    radio.addEventListener("change", ()=>{
-        total.textContent = radio.dataset.valor;
-        codigo.textContent = radio.dataset.codigo;
+radios.forEach(r=>{
+r.onchange=()=>{
+total.textContent=r.dataset.valor
+codigo.textContent=r.dataset.codigo
+pixBox.style.display="block"
+copiar.textContent="Copiar código Pix"
 
-        /* GERA QR CODE AUTOMÁTICO */
-        const pix = encodeURIComponent(radio.dataset.codigo);
-        qrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${pix}`;
-        qrcode.style.display = "block";
+qrDiv.innerHTML=""
+qr=new QRCode(qrDiv,{
+text:r.dataset.codigo,
+width:220,height:220
+})
+}
+})
 
-        pixBox.style.display = "block";
-        copiar.textContent = "Copiar código Pix";
-    });
-});
-
-/* COPIAR PIX */
-copiar.addEventListener("click", ()=>{
-    navigator.clipboard.writeText(codigo.textContent.trim());
-    copiar.textContent = "Código Pix copiado";
-});
+copiar.onclick=()=>{
+navigator.clipboard.writeText(codigo.textContent.trim())
+copiar.textContent="Código Pix copiado"
+}
 </script>
 
 </body>
