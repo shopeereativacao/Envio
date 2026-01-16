@@ -33,10 +33,7 @@ body{
     justify-content:center;
     z-index:9999;
 }
-
-#splash img{
-    width:120px;
-}
+#splash img{width:120px}
 
 /* LOGO */
 .header{
@@ -44,10 +41,7 @@ body{
     justify-content:center;
     padding:18px 0 10px;
 }
-
-.header img{
-    height:42px;
-}
+.header img{height:42px}
 
 /* CONTAINER */
 .container{
@@ -71,9 +65,8 @@ body{
     padding:10px 0;
     border-bottom:1px solid var(--borda);
 }
-
 .option:last-child{border-bottom:none}
-.option span{color:var(--cor)}
+.option span{color:var(--cor);font-weight:bold}
 
 button{
     width:100%;
@@ -85,7 +78,6 @@ button{
     font-size:14px;
     cursor:pointer;
 }
-
 button:hover{background:var(--cor-hover)}
 
 .pix-box{
@@ -104,6 +96,13 @@ button:hover{background:var(--cor-hover)}
     font-size:13px;
     color:var(--cor);
 }
+
+.footer{
+    margin-top:20px;
+    font-size:11px;
+    color:#777;
+    text-align:center;
+}
 </style>
 </head>
 
@@ -114,6 +113,7 @@ button:hover{background:var(--cor-hover)}
     <img src="logo1.jpeg">
 </div>
 
+<!-- LOGO -->
 <div class="header">
     <img src="logo1.jpeg">
 </div>
@@ -125,9 +125,9 @@ button:hover{background:var(--cor-hover)}
 
         <div class="option">
             <label>
-                <input type="radio" name="Express"
+                <input type="radio" name="envio"
                        data-valor="100,00"
-                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/610e07ffff244684a7a94a6fed8345e65204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***6304E5E1">
+                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/2235ea54b07743659de14e88603149c15204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***630481D7">
                 Envio Express
             </label>
             <span>R$ 100,00</span>
@@ -135,20 +135,23 @@ button:hover{background:var(--cor-hover)}
 
         <div class="option">
             <label>
-                <input type="radio" name="Normal"
+                <input type="radio" name="envio"
                        data-valor="50,00"
-                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/b3953de80c604e9dbecbeefb41eb7d1e5204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***630488FF">
+                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/90bbd13bd73e4a358759a6c243499ef75204000053039865802BR5916IVI GATEWAY LTDA6009JOINVILLE62070503***63047F0B">
                 Envio Normal
             </label>
-            <span>R$ 14,90</span>
+            <span>R$ 50,00</span>
         </div>
     </div>
 
     <div id="pixBox" class="pix-box">
-        <div><strong>Total:</strong></div>
-        <div style="font-size:18px;color:var(--cor);">
+        <strong>Total a pagar</strong>
+        <div style="font-size:18px;color:var(--cor);margin-bottom:10px;">
             R$ <span id="total">0,00</span>
         </div>
+
+        <!-- QR CODE -->
+        <img id="qrcode" style="width:220px;margin:10px auto;display:none;">
 
         <pre id="codigo" style="display:none;"></pre>
 
@@ -157,6 +160,11 @@ button:hover{background:var(--cor-hover)}
         <div class="notice">
             Após o pagamento, envie o comprovante no chat para confirmação.
         </div>
+    </div>
+
+    <div class="footer">
+        Pagamento protegido • Ambiente seguro<br>
+        CNPJ: 35.635.824/0001-12
     </div>
 
 </div>
@@ -174,42 +182,29 @@ const pixBox = document.getElementById("pixBox");
 const total = document.getElementById("total");
 const codigo = document.getElementById("codigo");
 const copiar = document.getElementById("copiar");
+const qrcode = document.getElementById("qrcode");
 
-/* SELEÇÃO DO ENVIO */
-radios.forEach(r=>{
-    r.onchange = ()=>{
-        total.textContent = parseFloat(r.dataset.valor)
-            .toFixed(2).replace(".",",");
-        codigo.textContent = r.dataset.codigo;
-        pixBox.style.display="block";
-        copiar.textContent="Copiar código Pix";
-    };
+/* ESCOLHA DO ENVIO */
+radios.forEach(radio=>{
+    radio.addEventListener("change", ()=>{
+        total.textContent = radio.dataset.valor;
+        codigo.textContent = radio.dataset.codigo;
+
+        /* GERA QR CODE AUTOMÁTICO */
+        const pix = encodeURIComponent(radio.dataset.codigo);
+        qrcode.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${pix}`;
+        qrcode.style.display = "block";
+
+        pixBox.style.display = "block";
+        copiar.textContent = "Copiar código Pix";
+    });
 });
 
-/* COPIAR + OK + VOLTAR AO MESMO WHATSAPP */
-copiar.onclick = ()=>{
+/* COPIAR PIX */
+copiar.addEventListener("click", ()=>{
     navigator.clipboard.writeText(codigo.textContent.trim());
-
-    setTimeout(()=>{
-        alert(
-          "Código Pix copiado!\n\n" +
-          "Após o pagamento, volte ao chat e envie o comprovante."
-        );
-
-        const origem = document.referrer;
-
-        /* tenta fechar */
-        window.close();
-
-        /* se não fechar, volta para o mesmo WhatsApp */
-        setTimeout(()=>{
-            if(origem){
-                window.location.href = origem;
-            }
-        },400);
-
-    },200);
-};
+    copiar.textContent = "Código Pix copiado";
+});
 </script>
 
 </body>
