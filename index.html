@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pagamento de Envio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+    --cor:#EE4D2D;
+    --cor-hover:#D84328;
+    --borda:#e5e5e5;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    margin:0;
+    background:#ffffff;
+    color:#333;
+}
+
+/* SPLASH */
+#splash{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+}
+
+#splash img{
+    width:120px;
+}
+
+/* LOGO */
+.header{
+    display:flex;
+    justify-content:center;
+    padding:18px 0 10px;
+}
+
+.header img{
+    height:42px;
+}
+
+/* CONTAINER */
+.container{
+    max-width:420px;
+    margin:auto;
+    padding:16px;
+}
+
+/* BOX */
+.box{
+    border:1px solid var(--borda);
+    border-radius:6px;
+    padding:14px;
+    margin-bottom:16px;
+}
+
+.option{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid var(--borda);
+}
+
+.option:last-child{border-bottom:none}
+.option span{color:var(--cor)}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:6px;
+    background:var(--cor);
+    color:#fff;
+    font-size:14px;
+    cursor:pointer;
+}
+
+button:hover{background:var(--cor-hover)}
+
+.pix-box{
+    display:none;
+    text-align:center;
+    border-top:1px solid var(--borda);
+    padding-top:16px;
+}
+
+.notice{
+    margin-top:12px;
+    padding:10px;
+    background:#fff3ef;
+    border:1px solid #ffd2c7;
+    border-radius:6px;
+    font-size:13px;
+    color:var(--cor);
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+    <img src="SUA_LOGO_AQUI.png">
+</div>
+
+<div class="header">
+    <img src="SUA_LOGO_AQUI.png">
+</div>
+
+<div class="container">
+
+    <div class="box">
+        <strong>Escolha o tipo de envio:</strong>
+
+        <div class="option">
+            <label>
+                <input type="radio" name="Express"
+                       data-valor="100,00"
+                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/610e07ffff244684a7a94a6fed8345e65204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***6304E5E1">
+                Envio Express
+            </label>
+            <span>R$ 100,00</span>
+        </div>
+
+        <div class="option">
+            <label>
+                <input type="radio" name="Normal"
+                       data-valor="50,00"
+                       data-codigo="00020101021226790014br.gov.bcb.pix2557qrcode.mwbank.com.br/cob/b3953de80c604e9dbecbeefb41eb7d1e5204000053039865802BR5916AJC GATEWAY LTDA6009JOINVILLE62070503***630488FF">
+                Envio Normal
+            </label>
+            <span>R$ 14,90</span>
+        </div>
+    </div>
+
+    <div id="pixBox" class="pix-box">
+        <div><strong>Total:</strong></div>
+        <div style="font-size:18px;color:var(--cor);">
+            R$ <span id="total">0,00</span>
+        </div>
+
+        <pre id="codigo" style="display:none;"></pre>
+
+        <button id="copiar">Copiar código Pix</button>
+
+        <div class="notice">
+            Após o pagamento, envie o comprovante no chat para confirmação.
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* SPLASH */
+window.onload = ()=>{
+    setTimeout(()=>{
+        document.getElementById("splash").style.display="none";
+    },1500);
+};
+
+const radios = document.querySelectorAll('input[name="envio"]');
+const pixBox = document.getElementById("pixBox");
+const total = document.getElementById("total");
+const codigo = document.getElementById("codigo");
+const copiar = document.getElementById("copiar");
+
+/* SELEÇÃO DO ENVIO */
+radios.forEach(r=>{
+    r.onchange = ()=>{
+        total.textContent = parseFloat(r.dataset.valor)
+            .toFixed(2).replace(".",",");
+        codigo.textContent = r.dataset.codigo;
+        pixBox.style.display="block";
+        copiar.textContent="Copiar código Pix";
+    };
+});
+
+/* COPIAR + OK + VOLTAR AO MESMO WHATSAPP */
+copiar.onclick = ()=>{
+    navigator.clipboard.writeText(codigo.textContent.trim());
+
+    setTimeout(()=>{
+        alert(
+          "Código Pix copiado!\n\n" +
+          "Após o pagamento, volte ao chat e envie o comprovante."
+        );
+
+        const origem = document.referrer;
+
+        /* tenta fechar */
+        window.close();
+
+        /* se não fechar, volta para o mesmo WhatsApp */
+        setTimeout(()=>{
+            if(origem){
+                window.location.href = origem;
+            }
+        },400);
+
+    },200);
+};
+</script>
+
+</body>
+</html>
